@@ -115,4 +115,16 @@ docker-compose up -d --build
 - **Frontend**: React 18, TypeScript, Vite, TailwindCSS, Lucide Icons, Axios.
 - **Backend**: Java 17, Spring Boot 3.2, Spring Security, Spring Data JPA, JWT, Flyway.
 - **Database**: PostgreSQL 15, Redis (Caching).
-- **DevOps**: Docker, Docker Compose, Nginx.
+- **DevOps**: Docker, Docker Compose, Nginx, GitLab CI/CD (CI Pipeline).
+
+---
+
+## 🔄 CI Pipeline (GitLab CI/CD)
+
+Repository này được cấu hình CI pipeline tự động trên GitLab (`.gitlab-ci.yml`):
+- **GitLab Repository**: `https://gitlab.com/phuleshi/exam`
+- **Tự động build & test**: Chạy Maven build cho Backend (Spring Boot) và Node npm build cho Frontend (React).
+- **Tự động đóng gói & đẩy Docker Image**: Build Docker container images và đẩy (push) lên **GitLab Container Registry** (`$CI_REGISTRY_IMAGE`).
+
+> **Lưu ý**: Cấu hình Kubernetes (Manifests & CD deployment) được tách riêng sang repository CD chuyên biệt.
+
