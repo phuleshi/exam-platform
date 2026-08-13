@@ -8,12 +8,11 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   GITOPS_REPO: ${{ github.repository_owner }}/exam-platform-gitops
-  CONFIG_FILE: k8s/backend.yaml
 
 jobs:
-  # Stage: build_dev (Build & Push Docker image to GHCR)
+  # Stage: build_dev (Build & Push Docker images for Backend & Frontend to GHCR)
   build_dev:
-    name: Build & Push Image (GHCR)
+    name: Build & Push Images (GHCR)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -35,7 +34,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push Backend Docker Image
+      - name: Build and Push Backend Image
         uses: docker/build-push-action@v5
         with:
           context: ./backend
@@ -45,7 +44,17 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend:${{ steps.vars.outputs.short_sha }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend:latest
 
-  # Stage: update_config_dev (Update GitOps repository config manifest)
+      - name: Build and Push Frontend Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend:${{ steps.vars.outputs.short_sha }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend:latest
+
+  # Stage: update_config_dev (Update GitOps repository manifests for Backend & Frontend)
   update_config_dev:
     name: Update GitOps Config Repository
     needs: [build_dev]
@@ -55,25 +64,31 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ env.GITOPS_REPO }}
-          token: ${{ secrets.GITOPS_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITOPS_TOKEN }}
           ref: main
 
-      - name: Update Image Tag in Manifest
+      - name: Update Image Tags in Manifests
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          FULL_IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend:${{ needs.build_dev.outputs.short_sha }}"
+          SHORT_SHA="${{ needs.build_dev.outputs.short_sha }}"
+          BACKEND_IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend:${SHORT_SHA}"
+          FRONTEND_IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend:${SHORT_SHA}"
 
-          # Cập nhật tag image trong file k8s manifest bằng sed
-          sed -i "s|image: ${{ env.REGISTRY }}/.*|image: ${FULL_IMAGE}|g" ${{ env.CONFIG_FILE }}
+          # Cập nhật tag image trong k8s/backend.yaml
+          sed -i "s|image: ${{ env.REGISTRY }}/.*/backend:.*|image: ${BACKEND_IMAGE}|g" k8s/backend.yaml
 
-          git add ${{ env.CONFIG_FILE }}
+          # Cập nhật tag image trong k8s/frontend.yaml
+          sed -i "s|image: ${{ env.REGISTRY }}/.*/frontend:.*|image: ${FRONTEND_IMAGE}|g" k8s/frontend.yaml
+
+          git add k8s/backend.yaml k8s/frontend.yaml
           if ! git diff-index --quiet HEAD; then
-            git commit -m "Update version ${{ needs.build_dev.outputs.short_sha }}"
+            git commit -m "Update backend & frontend image version to ${SHORT_SHA}"
             git push
           else
             echo "No changes to commit"
           fi
+
 
 
