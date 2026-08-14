@@ -49,7 +49,7 @@ export const Login: React.FC = () => {
     }
   };
 
-  const fillCredentials = (accEmail: string, accPass: string = 'password123') => {
+  const fillCredentials = (accEmail: string, accPass: string = '123456') => {
     setEmail(accEmail);
     setPassword(accPass);
   };
