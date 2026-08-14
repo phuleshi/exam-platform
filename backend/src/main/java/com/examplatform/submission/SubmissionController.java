@@ -7,6 +7,7 @@ import com.examplatform.submission.dto.SubmitExamRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ public class SubmissionController {
     private final SubmissionService submissionService;
 
     @PostMapping
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<ApiResponse<ResultDto>> submitExam(
             @Valid @RequestBody SubmitExamRequest request,
             @AuthenticationPrincipal CustomUserDetails userDetails

@@ -33,7 +33,9 @@ export const Login: React.FC = () => {
           res.data.token
         );
 
-        if (res.data.role === 'TEACHER' || res.data.role === 'ADMIN') {
+        if (res.data.role === 'ADMIN') {
+          navigate('/admin/classes');
+        } else if (res.data.role === 'TEACHER') {
           navigate('/teacher/dashboard');
         } else {
           navigate('/student/dashboard');

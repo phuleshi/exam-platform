@@ -32,8 +32,16 @@ export const Header: React.FC = () => {
             </div>
             <div className="text-left">
               <p className="text-xs font-bold text-slate-800">{user.fullName}</p>
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-900 border border-blue-200 uppercase">
-                {user.role === 'TEACHER' ? 'Giáo Viên' : user.role === 'ADMIN' ? 'Quản Trị' : 'Học Sinh'}
+              <span
+                className={`text-[10px] font-bold px-1.5 py-0.5 rounded border uppercase ${
+                  user.role === 'ADMIN'
+                    ? 'bg-purple-100 text-purple-900 border-purple-200'
+                    : user.role === 'TEACHER'
+                    ? 'bg-blue-100 text-blue-900 border-blue-200'
+                    : 'bg-emerald-100 text-emerald-900 border-emerald-200'
+                }`}
+              >
+                {user.role === 'ADMIN' ? 'Quản Trị Viên' : user.role === 'TEACHER' ? 'Giáo Viên' : 'Sinh Viên'}
               </span>
             </div>
           </div>

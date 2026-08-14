@@ -22,7 +22,7 @@ public class ClassroomController {
     private final ClassroomService classroomService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<ClassroomDto>> createClassroom(
             @Valid @RequestBody CreateClassroomRequest request,
             @AuthenticationPrincipal UserDetails userDetails) {
@@ -60,7 +60,7 @@ public class ClassroomController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<ClassroomDto>> updateClassroom(
             @PathVariable Long id,
             @Valid @RequestBody UpdateClassroomRequest request,
@@ -70,7 +70,7 @@ public class ClassroomController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteClassroom(
             @PathVariable Long id,
             @AuthenticationPrincipal UserDetails userDetails) {

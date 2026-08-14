@@ -45,7 +45,7 @@ public class ExamController {
     }
 
     @GetMapping("/student")
-    @PreAuthorize("hasRole('STUDENT') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<ApiResponse<List<ExamResponse>>> getStudentExams(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {

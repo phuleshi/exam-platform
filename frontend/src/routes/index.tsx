@@ -4,6 +4,10 @@ import { useAuth } from '../hooks/useAuth';
 import { MainLayout } from '../components/layout/MainLayout';
 import { Login } from '../pages/auth/Login';
 import { Register } from '../pages/auth/Register';
+
+import { AdminClassManagement } from '../pages/admin/ClassManagement';
+import { StudentManagement as AdminStudentManagement } from '../pages/admin/StudentManagement';
+
 import { Dashboard as StudentDashboard } from '../pages/student/Dashboard';
 import { ExamList as StudentExamList } from '../pages/student/ExamList';
 import { ExamDetail as StudentExamDetail } from '../pages/student/ExamDetail';
@@ -33,7 +37,7 @@ const ProtectedRoute = ({ children, allowedRoles }: { children: React.ReactNode;
 };
 
 export const AppRoutes: React.FC = () => {
-  const { isAuthenticated, isTeacher } = useAuth();
+  const { isAuthenticated, isAdmin, isTeacher } = useAuth();
 
   return (
     <Routes>
@@ -53,7 +57,31 @@ export const AppRoutes: React.FC = () => {
         <Route
           index
           element={
-            isTeacher ? <Navigate to="/teacher/dashboard" replace /> : <Navigate to="/student/dashboard" replace />
+            isAdmin ? (
+              <Navigate to="/admin/classes" replace />
+            ) : isTeacher ? (
+              <Navigate to="/teacher/dashboard" replace />
+            ) : (
+              <Navigate to="/student/dashboard" replace />
+            )
+          }
+        />
+
+        {/* Admin Routes */}
+        <Route
+          path="admin/classes"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN']}>
+              <AdminClassManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/students"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN']}>
+              <AdminStudentManagement />
+            </ProtectedRoute>
           }
         />
 
@@ -61,7 +89,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="student/dashboard"
           element={
-            <ProtectedRoute allowedRoles={['STUDENT', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['STUDENT']}>
               <StudentDashboard />
             </ProtectedRoute>
           }
@@ -69,7 +97,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="student/exams"
           element={
-            <ProtectedRoute allowedRoles={['STUDENT', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['STUDENT']}>
               <StudentExamList />
             </ProtectedRoute>
           }
@@ -77,7 +105,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="student/exams/:id"
           element={
-            <ProtectedRoute allowedRoles={['STUDENT', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['STUDENT']}>
               <StudentExamDetail />
             </ProtectedRoute>
           }
@@ -85,7 +113,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="student/exams/:id/taking"
           element={
-            <ProtectedRoute allowedRoles={['STUDENT', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['STUDENT']}>
               <StudentExamTaking />
             </ProtectedRoute>
           }
@@ -93,7 +121,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="student/results"
           element={
-            <ProtectedRoute allowedRoles={['STUDENT', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['STUDENT']}>
               <StudentResultPage />
             </ProtectedRoute>
           }
@@ -101,7 +129,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="student/results/:id"
           element={
-            <ProtectedRoute allowedRoles={['STUDENT', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['STUDENT']}>
               <StudentResultPage />
             </ProtectedRoute>
           }
@@ -111,7 +139,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="teacher/dashboard"
           element={
-            <ProtectedRoute allowedRoles={['TEACHER', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['TEACHER']}>
               <TeacherDashboard />
             </ProtectedRoute>
           }
@@ -119,7 +147,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="teacher/classes"
           element={
-            <ProtectedRoute allowedRoles={['TEACHER', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['TEACHER']}>
               <TeacherClassManagement />
             </ProtectedRoute>
           }
@@ -127,7 +155,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="teacher/exams"
           element={
-            <ProtectedRoute allowedRoles={['TEACHER', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['TEACHER']}>
               <TeacherExamManagement />
             </ProtectedRoute>
           }
@@ -135,7 +163,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="teacher/exams/create"
           element={
-            <ProtectedRoute allowedRoles={['TEACHER', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['TEACHER']}>
               <TeacherCreateExam />
             </ProtectedRoute>
           }
@@ -143,7 +171,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="teacher/exams/:id/edit"
           element={
-            <ProtectedRoute allowedRoles={['TEACHER', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['TEACHER']}>
               <TeacherEditExam />
             </ProtectedRoute>
           }
@@ -151,7 +179,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="teacher/exams/:id/questions"
           element={
-            <ProtectedRoute allowedRoles={['TEACHER', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['TEACHER']}>
               <TeacherQuestionManagement />
             </ProtectedRoute>
           }
@@ -159,7 +187,7 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="teacher/exams/:id/results"
           element={
-            <ProtectedRoute allowedRoles={['TEACHER', 'ADMIN']}>
+            <ProtectedRoute allowedRoles={['TEACHER']}>
               <TeacherExamResults />
             </ProtectedRoute>
           }
