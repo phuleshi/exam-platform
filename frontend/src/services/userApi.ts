@@ -16,6 +16,6 @@ export interface ChangePasswordParams {
 
 export const userApi = {
   getAllUsers: (): Promise<ApiResponse<User[]>> => api.get('/users'),
-  createStudent: (params: CreateStudentParams): Promise<ApiResponse<User>> => api.post('/users/students', params),
+  createStudent: (params: CreateStudentParams): Promise<ApiResponse<User>> => api.post('/users', params),
   changePassword: (params: ChangePasswordParams): Promise<ApiResponse<void>> => api.post('/users/change-password', params),
 };
