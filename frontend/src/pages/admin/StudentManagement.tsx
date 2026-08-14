@@ -222,9 +222,15 @@ export const StudentManagement: React.FC = () => {
 
           <Input
             label="Mã Sinh Viên (MSV)"
-            placeholder="Ví dụ: SV002"
+            placeholder="Ví dụ: 11210002"
             value={msv}
-            onChange={(e) => setMsv(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              setMsv(val);
+              if (val.trim() && (!email || email.endsWith('@st.neu.edu.vn'))) {
+                setEmail(`${val.trim()}@st.neu.edu.vn`);
+              }
+            }}
             required
           />
 
@@ -237,9 +243,9 @@ export const StudentManagement: React.FC = () => {
           />
 
           <Input
-            label="Địa chỉ Email"
+            label="Địa chỉ Email (ST NEU)"
             type="email"
-            placeholder="Ví dụ: nguyenvana@exam.com"
+            placeholder="Ví dụ: 11210002@st.neu.edu.vn"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required

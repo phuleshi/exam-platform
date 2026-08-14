@@ -87,14 +87,14 @@ export const Login: React.FC = () => {
             </button>
             <button
               type="button"
-              onClick={() => fillCredentials('student@exam.com')}
+              onClick={() => fillCredentials('11210001@st.neu.edu.vn')}
               className="px-2 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-bold rounded flex items-center justify-center gap-1 transition-colors"
             >
               <BookOpen size={12} /> SV Email
             </button>
             <button
               type="button"
-              onClick={() => fillCredentials('SV001')}
+              onClick={() => fillCredentials('11210001')}
               className="px-2 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold rounded flex items-center justify-center gap-1 transition-colors"
             >
               <GraduationCap size={12} /> SV (MSV)
@@ -112,7 +112,7 @@ export const Login: React.FC = () => {
           <Input
             label="Email hoặc Mã Sinh Viên (MSV)"
             type="text"
-            placeholder="Ví dụ: student@exam.com hoặc SV001"
+            placeholder="Ví dụ: 11210001@st.neu.edu.vn hoặc 11210001"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
