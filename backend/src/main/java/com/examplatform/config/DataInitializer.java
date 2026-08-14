@@ -19,9 +19,9 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        createOrResetUser("admin@exam.com", "Quản Trị Viên", "123456", Role.ADMIN, null);
-        createOrResetUser("teacher@exam.com", "Giáo Viên Mẫu", "123456", Role.TEACHER, null);
-        createOrResetUser("11210001@st.neu.edu.vn", "Sinh Viên NEU", "123456", Role.STUDENT, "11210001");
+        createOrResetUser("admin@exam.com", "Quản Trị Viên", "password123", Role.ADMIN, null);
+        createOrResetUser("teacher@exam.com", "Giáo Viên Mẫu", "password123", Role.TEACHER, null);
+        createOrResetUser("11210001@st.neu.edu.vn", "Sinh Viên NEU", "password123", Role.STUDENT, "11210001");
     }
 
     private void createOrResetUser(String email, String fullName, String rawPassword, Role role, String studentId) {

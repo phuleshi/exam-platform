@@ -104,9 +104,9 @@ docker-compose up -d --build
 
 | Vai trò | Email | Mật khẩu |
 | :--- | :--- | :--- |
-| **Quản trị viên (Admin)** | `admin@exam.com` | `123456` |
-| **Giáo viên (Teacher)** | `teacher@exam.com` | `123456` |
-| **Học sinh (Student)** | `student@exam.com` | `123456` |
+| **Quản trị viên (Admin)** | `admin@exam.com` | `password123` |
+| **Giáo viên (Teacher)** | `teacher@exam.com` | `password123` |
+| **Sinh viên (Student)** | `11210001@st.neu.edu.vn` hoặc `11210001` | `password123` |
 
 ---
 
