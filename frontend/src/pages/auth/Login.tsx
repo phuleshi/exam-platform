@@ -28,6 +28,7 @@ export const Login: React.FC = () => {
             id: res.data.id,
             fullName: res.data.fullName,
             email: res.data.email,
+            studentId: res.data.studentId,
             role: res.data.role,
           },
           res.data.token
@@ -69,7 +70,7 @@ export const Login: React.FC = () => {
           <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
             Chọn tài khoản mẫu đăng nhập nhanh:
           </span>
-          <div className="grid grid-cols-3 gap-1.5 text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs">
             <button
               type="button"
               onClick={() => fillCredentials('admin@exam.com')}
@@ -89,7 +90,14 @@ export const Login: React.FC = () => {
               onClick={() => fillCredentials('student@exam.com')}
               className="px-2 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-bold rounded flex items-center justify-center gap-1 transition-colors"
             >
-              <BookOpen size={12} /> Học Sinh
+              <BookOpen size={12} /> SV Email
+            </button>
+            <button
+              type="button"
+              onClick={() => fillCredentials('SV001')}
+              className="px-2 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold rounded flex items-center justify-center gap-1 transition-colors"
+            >
+              <GraduationCap size={12} /> SV (MSV)
             </button>
           </div>
         </div>
@@ -102,9 +110,9 @@ export const Login: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            label="Địa chỉ Email"
-            type="email"
-            placeholder="nhap-email@exam.com"
+            label="Email hoặc Mã Sinh Viên (MSV)"
+            type="text"
+            placeholder="Ví dụ: student@exam.com hoặc SV001"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required

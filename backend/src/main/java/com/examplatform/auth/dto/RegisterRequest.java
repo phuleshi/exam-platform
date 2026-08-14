@@ -19,5 +19,7 @@ public class RegisterRequest {
     @Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự")
     private String password;
 
+    private String studentId;
+
     private Role role = Role.STUDENT;
 }

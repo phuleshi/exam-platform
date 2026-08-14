@@ -10,6 +10,7 @@ export interface LoginParams {
 export interface RegisterParams {
   fullName: string;
   email: string;
+  studentId?: string;
   password: string;
   role?: Role;
 }
@@ -22,6 +23,7 @@ export interface AuthResponse {
     id: number;
     fullName: string;
     email: string;
+    studentId?: string;
     role: Role;
   };
 }

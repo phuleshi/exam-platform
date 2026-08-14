@@ -30,10 +30,14 @@ public class AuthService {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new BadRequestException("Email đã được sử dụng!");
         }
+        if (request.getStudentId() != null && !request.getStudentId().trim().isEmpty() && userRepository.existsByStudentId(request.getStudentId())) {
+            throw new BadRequestException("Mã sinh viên đã tồn tại!");
+        }
 
         User user = User.builder()
                 .fullName(request.getFullName())
                 .email(request.getEmail())
+                .studentId(request.getStudentId() != null && !request.getStudentId().trim().isEmpty() ? request.getStudentId().trim() : null)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole() != null ? request.getRole() : Role.STUDENT)
                 .build();
@@ -47,6 +51,7 @@ public class AuthService {
                 .id(user.getId())
                 .fullName(user.getFullName())
                 .email(user.getEmail())
+                .studentId(user.getStudentId())
                 .role(user.getRole())
                 .build();
     }
@@ -59,7 +64,7 @@ public class AuthService {
                 )
         );
 
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmailOrStudentId(request.getEmail(), request.getEmail())
                 .orElseThrow(() -> new BadRequestException("Người dùng không tồn tại"));
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
@@ -70,6 +75,7 @@ public class AuthService {
                 .id(user.getId())
                 .fullName(user.getFullName())
                 .email(user.getEmail())
+                .studentId(user.getStudentId())
                 .role(user.getRole())
                 .build();
     }

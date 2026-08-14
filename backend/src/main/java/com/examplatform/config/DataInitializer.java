@@ -19,17 +19,18 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        createOrResetUser("admin@exam.com", "Quản Trị Viên", "123456", Role.ADMIN);
-        createOrResetUser("teacher@exam.com", "Giáo Viên Mẫu", "123456", Role.TEACHER);
-        createOrResetUser("student@exam.com", "Học Sinh Mẫu", "123456", Role.STUDENT);
+        createOrResetUser("admin@exam.com", "Quản Trị Viên", "123456", Role.ADMIN, null);
+        createOrResetUser("teacher@exam.com", "Giáo Viên Mẫu", "123456", Role.TEACHER, null);
+        createOrResetUser("student@exam.com", "Học Sinh Mẫu", "123456", Role.STUDENT, "SV001");
     }
 
-    private void createOrResetUser(String email, String fullName, String rawPassword, Role role) {
+    private void createOrResetUser(String email, String fullName, String rawPassword, Role role, String studentId) {
         User user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
             user = User.builder()
                     .email(email)
                     .fullName(fullName)
+                    .studentId(studentId)
                     .password(passwordEncoder.encode(rawPassword))
                     .role(role)
                     .build();
@@ -38,6 +39,9 @@ public class DataInitializer implements CommandLineRunner {
         } else {
             user.setPassword(passwordEncoder.encode(rawPassword));
             user.setRole(role);
+            if (studentId != null) {
+                user.setStudentId(studentId);
+            }
             userRepository.save(user);
             log.info("Reset password for demo user {} to {}", email, rawPassword);
         }
