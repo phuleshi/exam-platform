@@ -40,7 +40,7 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success(users));
     }
 
-    @PostMapping("/students")
+    @PostMapping({"", "/students"})
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<User>> createStudent(@Valid @RequestBody CreateStudentRequest request) {
         User student = userService.createStudent(request);
