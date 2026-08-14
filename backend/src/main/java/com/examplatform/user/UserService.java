@@ -29,18 +29,38 @@ public class UserService {
 
     @Transactional
     public User createStudent(CreateStudentRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new BadRequestException("Email đã được sử dụng!");
+        if (request == null) {
+            throw new BadRequestException("Dữ liệu tạo sinh viên không hợp lệ!");
+        }
+        if (request.getStudentId() == null || request.getStudentId().trim().isEmpty()) {
+            throw new BadRequestException("Mã sinh viên không được để trống!");
+        }
+        if (request.getFullName() == null || request.getFullName().trim().isEmpty()) {
+            throw new BadRequestException("Họ tên sinh viên không được để trống!");
+        }
+        if (request.getEmail() == null || request.getEmail().trim().isEmpty()) {
+            throw new BadRequestException("Email không được để trống!");
+        }
+        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            throw new BadRequestException("Mật khẩu không được để trống!");
         }
 
-        if (userRepository.existsByStudentId(request.getStudentId())) {
-            throw new BadRequestException("Mã sinh viên đã tồn tại trong hệ thống!");
+        String studentId = request.getStudentId().trim();
+        String email = request.getEmail().trim();
+        String fullName = request.getFullName().trim();
+
+        if (userRepository.existsByEmail(email)) {
+            throw new BadRequestException("Email " + email + " đã được sử dụng!");
+        }
+
+        if (userRepository.existsByStudentId(studentId)) {
+            throw new BadRequestException("Mã sinh viên " + studentId + " đã tồn tại trong hệ thống!");
         }
 
         User student = User.builder()
-                .studentId(request.getStudentId().trim())
-                .fullName(request.getFullName().trim())
-                .email(request.getEmail().trim())
+                .studentId(studentId)
+                .fullName(fullName)
+                .email(email)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.STUDENT)
                 .build();

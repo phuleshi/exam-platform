@@ -49,7 +49,7 @@ export const Login: React.FC = () => {
     }
   };
 
-  const fillCredentials = (accEmail: string, accPass: string = '123456') => {
+  const fillCredentials = (accEmail: string, accPass: string = 'password123') => {
     setEmail(accEmail);
     setPassword(accPass);
   };
@@ -74,28 +74,28 @@ export const Login: React.FC = () => {
             <button
               type="button"
               onClick={() => fillCredentials('admin@exam.com')}
-              className="px-2 py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-900 font-bold rounded flex items-center justify-center gap-1 transition-colors"
+              className="px-2 py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-900 font-bold rounded flex items-center justify-center gap-1 transition-colors cursor-pointer"
             >
               <ShieldAlert size={12} /> Admin
             </button>
             <button
               type="button"
               onClick={() => fillCredentials('teacher@exam.com')}
-              className="px-2 py-1.5 bg-blue-100 hover:bg-blue-200 text-blue-900 font-bold rounded flex items-center justify-center gap-1 transition-colors"
+              className="px-2 py-1.5 bg-blue-100 hover:bg-blue-200 text-blue-900 font-bold rounded flex items-center justify-center gap-1 transition-colors cursor-pointer"
             >
               <UserCheck size={12} /> Giáo Viên
             </button>
             <button
               type="button"
               onClick={() => fillCredentials('11210001@st.neu.edu.vn')}
-              className="px-2 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-bold rounded flex items-center justify-center gap-1 transition-colors"
+              className="px-2 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-bold rounded flex items-center justify-center gap-1 transition-colors cursor-pointer"
             >
               <BookOpen size={12} /> SV Email
             </button>
             <button
               type="button"
               onClick={() => fillCredentials('11210001')}
-              className="px-2 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold rounded flex items-center justify-center gap-1 transition-colors"
+              className="px-2 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold rounded flex items-center justify-center gap-1 transition-colors cursor-pointer"
             >
               <GraduationCap size={12} /> SV (MSV)
             </button>
