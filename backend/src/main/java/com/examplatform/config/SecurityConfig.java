@@ -36,13 +36,14 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/error", "/v3/api-docs/**", "/swagger-ui/**", "/actuator/health").permitAll()
+                        .requestMatchers("/auth/**", "/error", "/v3/api-docs/**", "/swagger-ui/**", "/actuator/health",
+                                "/api/v1/actuator/prometheus")
+                        .permitAll()
                         .requestMatchers(HttpMethod.GET, "/exams/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/exams/**").hasRole("TEACHER")
                         .requestMatchers(HttpMethod.PUT, "/exams/**").hasRole("TEACHER")
                         .requestMatchers(HttpMethod.DELETE, "/exams/**").hasRole("TEACHER")
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
