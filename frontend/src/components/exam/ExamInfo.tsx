@@ -1,6 +1,7 @@
 import React from 'react';
 import { Exam } from '../../types/Exam';
-import { Clock, HelpCircle, Award, UserCheck, ShieldCheck } from 'lucide-react';
+import { Clock, HelpCircle, Award, UserCheck, ShieldCheck, Calendar } from 'lucide-react';
+import { formatDateTime } from '../../utils/dateUtils';
 
 interface ExamInfoProps {
   exam: Exam;
@@ -16,6 +17,23 @@ export const ExamInfo: React.FC<ExamInfoProps> = ({ exam }) => {
         <h2 className="text-2xl font-bold text-slate-900 mt-3">{exam.title}</h2>
         <p className="text-slate-600 mt-2 leading-relaxed">{exam.description || 'Chưa có mô tả.'}</p>
       </div>
+
+      {(exam.startTime || exam.endTime) && (
+        <div className="p-3 bg-blue-50/80 border border-blue-200 rounded-md flex flex-wrap items-center gap-6 text-xs text-blue-900 font-semibold">
+          {exam.startTime && (
+            <div className="flex items-center gap-2">
+              <Calendar size={16} className="text-blue-700" />
+              <span>Thời gian mở đề: <strong className="font-bold text-blue-950">{formatDateTime(exam.startTime)}</strong></span>
+            </div>
+          )}
+          {exam.endTime && (
+            <div className="flex items-center gap-2">
+              <Calendar size={16} className="text-red-600" />
+              <span>Thời gian đóng đề: <strong className="font-bold text-red-950">{formatDateTime(exam.endTime)}</strong></span>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-slate-200">
         <div className="p-4 rounded-md bg-slate-50 border border-slate-200 flex items-center gap-3">

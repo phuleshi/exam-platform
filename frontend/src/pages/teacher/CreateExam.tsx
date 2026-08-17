@@ -8,6 +8,7 @@ import { Classroom } from '../../types/Classroom';
 import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { ArrowLeft, Save, Calendar, Users, Clock, BookOpen } from 'lucide-react';
+import { formatToLocalISO } from '../../utils/dateUtils';
 
 export const CreateExam: React.FC = () => {
   const navigate = useNavigate();
@@ -35,13 +36,19 @@ export const CreateExam: React.FC = () => {
     const fetchData = async () => {
       try {
         const [userRes, classRes] = await Promise.all([
-          userApi.getAllUsers(),
-          classroomApi.getTeacherClassrooms(),
+          userApi.getAllUsers().catch((err) => {
+            console.error('Lỗi nạp danh sách học sinh:', err);
+            return { success: false, data: [] };
+          }),
+          classroomApi.getTeacherClassrooms().catch((err) => {
+            console.error('Lỗi nạp danh sách lớp học:', err);
+            return { success: false, data: [] };
+          }),
         ]);
-        if (userRes.data) {
+        if (userRes && userRes.data) {
           setStudents(userRes.data.filter((u: User) => u.role === 'STUDENT'));
         }
-        if (classRes.data) {
+        if (classRes && classRes.data) {
           setClassrooms(classRes.data);
         }
       } catch (err) {
@@ -74,8 +81,8 @@ export const CreateExam: React.FC = () => {
         description,
         durationMinutes: Number(durationMinutes),
         passScore: Number(passScore),
-        startTime: startTime ? new Date(startTime).toISOString() : undefined,
-        endTime: endTime ? new Date(endTime).toISOString() : undefined,
+        startTime: formatToLocalISO(startTime),
+        endTime: formatToLocalISO(endTime),
         assignedStudentIds: assignMode === 'SPECIFIC' ? selectedStudentIds : [],
         assignedClassroomIds: assignMode === 'CLASS' ? selectedClassroomIds : [],
       });

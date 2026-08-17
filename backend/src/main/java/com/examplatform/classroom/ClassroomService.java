@@ -63,6 +63,11 @@ public class ClassroomService {
     public List<ClassroomDto> getTeacherClassrooms(String teacherEmail) {
         User teacher = userRepository.findByEmail(teacherEmail)
                 .orElseThrow(() -> new RuntimeException("Giáo viên không tồn tại"));
+        if (teacher.getRole() == Role.ADMIN) {
+            return classroomRepository.findAll().stream()
+                    .map(this::mapToDto)
+                    .toList();
+        }
         return classroomRepository.findByTeacherId(teacher.getId())
                 .stream()
                 .map(this::mapToDto)

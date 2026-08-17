@@ -3,6 +3,7 @@ import { Exam } from '../../types/Exam';
 import { Clock, HelpCircle, Award, ArrowRight, BookOpen } from 'lucide-react';
 import { Button } from '../common/Button';
 import { useNavigate } from 'react-router-dom';
+import { formatDateTime } from '../../utils/dateUtils';
 
 interface ExamCardProps {
   exam: Exam;
@@ -57,13 +58,13 @@ export const ExamCard: React.FC<ExamCardProps> = ({ exam, isTeacher = false }) =
             {exam.startTime && (
               <div className="flex items-center gap-1.5">
                 <Clock size={13} className="text-blue-700 shrink-0" />
-                <span>Mở thi: {new Date(exam.startTime).toLocaleString('vi-VN')}</span>
+                <span>Mở thi: {formatDateTime(exam.startTime)}</span>
               </div>
             )}
             {exam.endTime && (
               <div className="flex items-center gap-1.5">
                 <Clock size={13} className="text-red-600 shrink-0" />
-                <span>Đóng thi: {new Date(exam.endTime).toLocaleString('vi-VN')}</span>
+                <span>Đóng thi: {formatDateTime(exam.endTime)}</span>
               </div>
             )}
           </div>

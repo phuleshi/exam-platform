@@ -10,20 +10,7 @@ import { ExamStatus } from '../../types/Exam';
 import { User } from '../../types/User';
 import { Classroom } from '../../types/Classroom';
 import { ArrowLeft, Save, Calendar, Users, Clock, BookOpen } from 'lucide-react';
-
-const formatForDatetimeLocal = (isoStr?: string) => {
-  if (!isoStr) return '';
-  try {
-    const d = new Date(isoStr);
-    if (isNaN(d.getTime())) return '';
-    const pad = (n: number) => (n < 10 ? '0' + n : n);
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(
-      d.getMinutes()
-    )}`;
-  } catch {
-    return '';
-  }
-};
+import { formatForDatetimeLocal, formatToLocalISO } from '../../utils/dateUtils';
 
 export const EditExam: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -53,15 +40,21 @@ export const EditExam: React.FC = () => {
       try {
         const [examRes, usersRes, classRes] = await Promise.all([
           examApi.getExamById(Number(id)),
-          userApi.getAllUsers(),
-          classroomApi.getTeacherClassrooms(),
+          userApi.getAllUsers().catch((err) => {
+            console.error('Lỗi nạp danh sách học sinh:', err);
+            return { success: false, data: [] };
+          }),
+          classroomApi.getTeacherClassrooms().catch((err) => {
+            console.error('Lỗi nạp danh sách lớp học:', err);
+            return { success: false, data: [] };
+          }),
         ]);
 
-        if (usersRes.data) {
+        if (usersRes && usersRes.data) {
           setStudents(usersRes.data.filter((u: User) => u.role === 'STUDENT'));
         }
 
-        if (classRes.data) {
+        if (classRes && classRes.data) {
           setClassrooms(classRes.data);
         }
 
@@ -118,8 +111,8 @@ export const EditExam: React.FC = () => {
         durationMinutes: Number(durationMinutes),
         passScore: Number(passScore),
         status,
-        startTime: startTime ? new Date(startTime).toISOString() : undefined,
-        endTime: endTime ? new Date(endTime).toISOString() : undefined,
+        startTime: formatToLocalISO(startTime),
+        endTime: formatToLocalISO(endTime),
         assignedStudentIds: assignMode === 'SPECIFIC' ? selectedStudentIds : [],
         assignedClassroomIds: assignMode === 'CLASS' ? selectedClassroomIds : [],
       });
