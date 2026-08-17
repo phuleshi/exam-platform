@@ -71,12 +71,14 @@ public class ExamService {
         User teacher = userRepository.findById(teacherId)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy thông tin giáo viên"));
 
+        ExamStatus examStatus = request.getStatus() != null ? request.getStatus() : ExamStatus.PUBLISHED;
+
         Exam exam = Exam.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .durationMinutes(request.getDurationMinutes())
                 .passScore(request.getPassScore())
-                .status(ExamStatus.DRAFT)
+                .status(examStatus)
                 .createdBy(teacher)
                 .startTime(request.getStartTime())
                 .endTime(request.getEndTime())

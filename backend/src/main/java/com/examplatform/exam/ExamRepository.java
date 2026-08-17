@@ -21,7 +21,7 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
            "AND (e.startTime IS NULL OR e.startTime <= :now) " +
            "AND (e.endTime IS NULL OR e.endTime > :now) " +
            "AND (" +
-           "  (SIZE(e.assignedStudents) = 0 AND SIZE(e.assignedClasses) = 0) " +
+           "  (e.assignedStudents IS EMPTY AND e.assignedClasses IS EMPTY) " +
            "  OR s.id = :studentId " +
            "  OR cs.id = :studentId" +
            ")")

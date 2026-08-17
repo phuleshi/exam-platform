@@ -21,6 +21,7 @@ public class CreateExamRequest {
     @NotNull(message = "Điểm đạt không được để trống")
     private Double passScore;
 
+    private com.examplatform.exam.ExamStatus status;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private java.util.List<Long> assignedStudentIds;

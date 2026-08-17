@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { examApi } from '../../services/examApi';
 import { userApi } from '../../services/userApi';
 import { classroomApi } from '../../services/classroomApi';
+import { ExamStatus } from '../../types/Exam';
 import { User } from '../../types/User';
 import { Classroom } from '../../types/Classroom';
 import { Input } from '../../components/common/Input';
@@ -17,6 +18,7 @@ export const CreateExam: React.FC = () => {
   const [description, setDescription] = useState('');
   const [durationMinutes, setDurationMinutes] = useState(45);
   const [passScore, setPassScore] = useState(5.0);
+  const [status, setStatus] = useState<ExamStatus>('PUBLISHED');
 
   // Scheduling states
   const [startTime, setStartTime] = useState('');
@@ -81,6 +83,7 @@ export const CreateExam: React.FC = () => {
         description,
         durationMinutes: Number(durationMinutes),
         passScore: Number(passScore),
+        status,
         startTime: formatToLocalISO(startTime),
         endTime: formatToLocalISO(endTime),
         assignedStudentIds: assignMode === 'SPECIFIC' ? selectedStudentIds : [],
@@ -168,6 +171,20 @@ export const CreateExam: React.FC = () => {
                 onChange={(e) => setPassScore(Number(e.target.value))}
                 required
               />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-600">
+                Trạng Thái Phân Phối Đề Thi
+              </label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value as ExamStatus)}
+                className="w-full px-3.5 py-2.5 bg-white border border-slate-300 text-slate-900 rounded-md focus:outline-hidden focus:border-blue-800 text-sm font-semibold cursor-pointer"
+              >
+                <option value="PUBLISHED">Đã Xuất Bản (PUBLISHED - Hiển thị ngay cho học sinh)</option>
+                <option value="DRAFT">Bản Nháp (DRAFT - Lưu nháp, học sinh chưa nhìn thấy)</option>
+              </select>
             </div>
           </div>
 
