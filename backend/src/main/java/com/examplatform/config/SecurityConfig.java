@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/error", "/v3/api-docs/**", "/swagger-ui/**", "/actuator/health",
-                                "/api/v1/actuator/prometheus")
+                                "/actuator/prometheus")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/exams/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/exams/**").hasRole("TEACHER")
