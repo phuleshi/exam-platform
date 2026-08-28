@@ -19,6 +19,11 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @GetMapping("/ping")
+    public ResponseEntity<ApiResponse<String>> ping() {
+        return ResponseEntity.ok(ApiResponse.success("Backend is UP!", "PONG"));
+    }
+
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<LoginResponse>> register(@Valid @RequestBody RegisterRequest request) {
         LoginResponse response = authService.register(request);
