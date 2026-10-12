@@ -75,13 +75,13 @@ jobs:
           BACKEND_IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend:${SHORT_SHA}"
           FRONTEND_IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend:${SHORT_SHA}"
 
-          # Cập nhật tag image trong k8s/backend.yaml
-          sed -i "s|image: ${{ env.REGISTRY }}/.*/backend:.*|image: ${BACKEND_IMAGE}|g" k8s/backend.yaml
+          # Cập nhật tag image trong backend.yaml
+          sed -i "s|image: ${{ env.REGISTRY }}/.*/backend:.*|image: ${BACKEND_IMAGE}|g" backend.yaml
 
-          # Cập nhật tag image trong k8s/frontend.yaml
-          sed -i "s|image: ${{ env.REGISTRY }}/.*/frontend:.*|image: ${FRONTEND_IMAGE}|g" k8s/frontend.yaml
+          # Cập nhật tag image trong frontend.yaml
+          sed -i "s|image: ${{ env.REGISTRY }}/.*/frontend:.*|image: ${FRONTEND_IMAGE}|g" frontend.yaml
 
-          git add k8s/backend.yaml k8s/frontend.yaml
+          git add backend.yaml frontend.yaml
           if ! git diff-index --quiet HEAD; then
             git commit -m "Update backend & frontend image version to ${SHORT_SHA}"
             git push
